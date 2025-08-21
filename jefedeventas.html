@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel - Jefe de Ventas</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="jefedeventas.css">
+  
+</head>
+<body>
+
+  <h2><i class="fas fa-clipboard-list"></i> Pedidos Pendientes</h2>
+  <div id="listaPedidos"></div>
+
+  <div class="separador"></div>
+
+  <h2><i class="fas fa-box-open"></i> Historial de Pedidos Entregados</h2>
+  <div id="listaHistorial"></div>
+
+  <div class="footer">
+    Panel de gestión de pedidos &copy; Agencia de Viajes 2025
+  </div>
+
+  <script>
+    let pedidosPendientes = JSON.parse(localStorage.getItem("pedidosPendientes")) || [];
+    let pedidosEntregados = JSON.parse(localStorage.getItem("pedidosEntregados")) || [];
+
+    function mostrarPedidos() {
+      const contenedor = document.getElementById("listaPedidos");
+      contenedor.innerHTML = "";
+      pedidosPendientes.forEach(pedido => {
+        const div = document.createElement("div");
+        div.className = "pedido";
+        div.innerHTML = `
+          <p><strong>ID Pedido:</strong> ${pedido.id}</p>
+          <p><strong>Cliente:</strong> ${pedido.cliente}</p>
+          <p><strong>Total:</strong> $${pedido.total}</p>
+          <p><strong>Productos:</strong> ${pedido.items.map(i => `${i.nombre} x${i.cantidad}`).join(", ")}</p>
+          <button onclick="entregarPedido(${pedido.id})"><i class="fas fa-check-circle"></i> Entregar Pedido</button>
+        `;
+        contenedor.appendChild(div);
+      });
+    }
+
+    function mostrarHistorial() {
+      const contenedor = document.getElementById("listaHistorial");
+      contenedor.innerHTML = "";
+      pedidosEntregados.forEach(pedido => {
+        const div = document.createElement("div");
+        div.className = "pedido entregado";
+        div.innerHTML = `
+          <p><strong>ID:</strong> ${pedido.id}</p>
+          <p><strong>Cliente:</strong> ${pedido.cliente}</p>
+          <p><strong>Productos:</strong> ${pedido.items.map(i => `${i.nombre} x${i.cantidad}`).join(", ")}</p>
+          <p><strong>Total:</strong> $${pedido.total}</p>
+          <p><em>Pedido entregado</em></p>
+        `;
+        contenedor.appendChild(div);
+      });
+    }
+
+    function entregarPedido(id) {
+      const index = pedidosPendientes.findIndex(p => p.id === id);
+      if (index !== -1) {
+        const entregado = pedidosPendientes.splice(index, 1)[0];
+        pedidosEntregados.push(entregado);
+        localStorage.setItem("pedidosPendientes", JSON.stringify(pedidosPendientes));
+        localStorage.setItem("pedidosEntregados", JSON.stringify(pedidosEntregados));
+        mostrarPedidos();
+        mostrarHistorial();
+      }
+    }
+
+    mostrarPedidos();
+    mostrarHistorial();
+  </script>
+
+</body>
+</html>

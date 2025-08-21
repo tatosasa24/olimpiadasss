@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio - Agencia Turística</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+  <header>
+    <div class="header-contenido">
+      <img src="agencia-de-viajes-online-Photoroom.png" alt="Logo">
+      <h2>Agencia Turística</h2>
+    </div>
+
+    <div class="registro-header">
+      <div class="moneda-selector">
+        <select id="moneda">
+          <option value="ARS">🇦🇷 ARS</option>
+          <option value="USD">🇺🇸 USD</option>
+          <option value="EUR">🇪🇺 EUR</option>
+        </select>
+      </div>
+      <button id="btnToggleRegistro">Iniciar sesión <i class="fa fa-address-book"></i></button>
+    </div>
+
+    <form id="formRegistro" class="nav-formulario hidden">
+      <input type="text" placeholder="Usuario" required>
+      <input type="password" placeholder="Contraseña" required>
+      <button type="submit">Ingresar</button>
+
+      <div class="divider">o</div>
+
+      <button type="button" id="btnGoogleLogin" class="btn-google">
+        <i class="fa fa-google"></i> Iniciar sesión con Google
+      </button>
+
+      <p class="registro-link">
+        ¿No tenés cuenta? <a href="registro.html">Registrate</a>
+      </p>
+    </form>
+  </header>
+
+  <nav>
+    <div class="nav-links">
+      <a href="vuelos.html">Vuelos</a>
+      <a href="ofertas.html">Ofertas</a>
+      <a href="jefedeventas.html">Ventas</a>
+    </div>
+  </nav>
+
+  <section class="hero-banner">
+    <h1>Explorá el mundo con nosotros</h1>
+    <p>Vuelos, hoteles y paquetes al mejor precio</p>
+  </section>
+
+ <section class="buscador-container" style="background:#ffffff; padding:2rem;">
+  <h2 style="text-align:center; color:#004080;">🔍 Buscador de Vuelos</h2>
+  <form class="buscador-form" id="formBusqueda" style="max-width: 800px; margin:auto;">
+    <div class="opciones-viaje" style="margin-bottom: 1rem; text-align:center;">
+    </div>
+    <div class="opciones-viaje" style="margin-bottom: 1rem; text-align:center;">
+  <label><input type="radio" name="tipo-viaje" value="ida_vuelta" id="radio_ida_vuelta" checked> Ida y vuelta</label>
+  <label><input type="radio" name="tipo-viaje" value="solo_ida" id="radio_solo_ida"> Solo ida</label>
+  <label><input type="radio" name="tipo-viaje" value="multidestino" id="radio_multidestino"> Multidestino</label>
+</div>
+
+
+    <div class="campos-busqueda" style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+      
+      <input type="text" id="origen" placeholder="Origen" required>
+      <input type="text" id="destino" placeholder="Destino" required>
+      <input type="date" id="fechaSalida" required>
+      <input type="date" id="fechaRegreso" required>
+      <select id="pasajeros">
+        <option>1 pasajero</option>
+        <option>2 pasajeros</option>
+        <option>3 pasajero</option>
+      </select>
+      
+      <button type="submit" style="grid-column: span 2; padding: 0.7rem; background: #004080; color: white; border: none; border-radius: 6px;">Buscar</button>
+    </div>
+
+    <label class="fecha-barata" style="display:block; margin-top:1rem; text-align:center;">
+      <input type="checkbox" id="buscarFechas"> Ver fechas más baratas automáticamente
+    </label>
+
+    <div id="resultadoBusqueda" style="margin-top: 1.5rem; font-size: 1.1rem; font-weight: bold; color:#004080; text-align:center;"></div>
+  </form>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("formBusqueda");
+    const resultado = document.getElementById("resultadoBusqueda");
+
+    const destinosEjemplo = ["Bariloche", "Mendoza", "Salta", "Cataratas", "Ushuaia"];
+
+    function generarPrecioAleatorio() {
+      return Math.floor(Math.random() * (200000 - 100000 + 1)) + 100000;
+    }
+
+    function generarFechaBarata() {
+      const año = 2025;
+      const mes = Math.floor(Math.random() * 12) + 1;
+      const dia = Math.floor(Math.random() * 28) + 1;
+      return `${año}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+    }
+
+    // Desactivar fecha regreso si es "Solo ida"
+    document.getElementById("radio_solo_ida").addEventListener("change", () => {
+      document.getElementById("fechaRegreso").disabled = true;
+    });
+    document.getElementById("radio_ida_vuelta").addEventListener("change", () => {
+      document.getElementById("fechaRegreso").disabled = false;
+    });
+    document.getElementById("radio_multidestino").addEventListener("change", () => {
+      document.getElementById("fechaRegreso").disabled = false;
+    });
+
+    // Enviar el formulario
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const origen = document.getElementById("origen").value.trim();
+      const destino = document.getElementById("destino").value.trim();
+      const fechaSalida = document.getElementById("fechaSalida").value;
+      const fechaRegreso = document.getElementById("fechaRegreso").value;
+      const pasajeros = document.getElementById("pasajeros").value;
+      const verFechas = document.getElementById("buscarFechas").checked;
+
+      if (!origen || !destino || !fechaSalida || (!document.getElementById("fechaRegreso").disabled && !fechaRegreso)) {
+        resultado.innerHTML = "⚠️ Completá todos los campos.";
+        return;
+      }
+
+      const precio = generarPrecioAleatorio();
+      let mensaje = `✈️ Vuelo desde <strong>${origen}</strong> a <strong>${destino}</strong><br>`;
+      mensaje += `💰 Precio estimado: <strong>$${precio}</strong><br>`;
+      mensaje += `🧍 Pasajeros: ${pasajeros}<br>`;
+      mensaje += `📅 Fecha de salida: ${fechaSalida}`;
+      
+      if (!document.getElementById("fechaRegreso").disabled) {
+        mensaje += `<br>📅 Fecha de regreso: ${fechaRegreso}`;
+      }
+
+      if (verFechas) {
+        const fechaBarata = generarFechaBarata();
+        mensaje += `<br>📌 <strong>Fecha más barata sugerida:</strong> ${fechaBarata}`;
+      }
+
+      resultado.innerHTML = mensaje;
+    });
+
+    // Auto buscar cuando elige una fecha
+    document.getElementById("fechaSalida").addEventListener("change", () => {
+      const destino = document.getElementById("destino").value.trim();
+      if (destino) {
+        form.requestSubmit();
+      }
+    });
+  });
+</script>
+
+
+  <section class="testimonios">
+    <h2 style="color: #004080;">¿Qué dicen nuestros clientes?</h2>
+    <blockquote>"Excelente servicio y atención. El viaje a Bariloche fue inolvidable. ¡Gracias!" - Mariana G.</blockquote>
+    <blockquote>"Muy buena atención y precios accesibles. ¡Volveremos a reservar!" - Daniel R.</blockquote>
+  </section>
+
+ 
+  <script>
+    const btnToggle = document.getElementById("btnToggleRegistro");
+    const form = document.getElementById("formRegistro");
+
+    btnToggle.addEventListener("click", () => {
+      form.classList.toggle("hidden");
+    });
+
+    const btnGoogleLogin = document.getElementById("btnGoogleLogin");
+    btnGoogleLogin.addEventListener("click", () => {
+      alert("Función de inicio con Google aún no implementada.");
+    });
+
+    const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+    if (usuario && usuario.logueado) {
+      const registroHeader = document.querySelector(".registro-header");
+      registroHeader.innerHTML = `
+        <div class="bienvenida">
+          Hola, ${usuario.nombre}
+          <button onclick="cerrarSesion()">Cerrar sesión</button>
+        </div>
+      `;
+    }
+
+    function cerrarSesion() {
+      localStorage.removeItem("usuarioActivo");
+      window.location.reload();
+    }
+    
+  </script>
+  <section style="background:#fff; padding:2rem;">
+  <h2 style="color:#004080;">💬 Experiencias de nuestros viajeros</h2>
+  <div id="comentarios-container" style="margin-top:1rem;"></div>
+
+  <form id="comentario-form" style="margin-top:2rem;">
+    <h4>Contanos tu experiencia</h4>
+    <input type="text" id="nombreComentador" placeholder="Tu nombre" required style="padding:0.5rem; width:100%; margin-bottom:0.5rem;">
+    <textarea id="comentarioTexto" rows="3" placeholder="¿Qué fue lo que más te gustó?" required style="padding:0.5rem; width:100%; margin-bottom:0.5rem;"></textarea>
+    <button type="submit" style="padding:0.5rem 1rem; background:#004080; color:white; border:none; border-radius:5px; cursor:pointer;">Enviar comentario</button>
+  </form>
+</section>
+<script>
+  const comentariosDefault = [
+    { nombre: "María G.", texto: "¡Bariloche fue un sueño! Todo muy bien organizado." },
+    { nombre: "Luis A.", texto: "Excelente atención y seguimiento. Repetiría sin dudas." },
+    { nombre: "Cecilia R.", texto: "Los precios fueron súper competitivos, y el viaje a Cataratas fue inolvidable." }
+  ];
+
+  const comentarios = JSON.parse(localStorage.getItem("comentariosViajeros")) || comentariosDefault;
+  const contenedor = document.getElementById("comentarios-container");
+
+  function mostrarComentarios() {
+    contenedor.innerHTML = "";
+    comentarios.forEach(c => {
+      const div = document.createElement("div");
+      div.style.borderBottom = "1px solid #ccc";
+      div.style.marginBottom = "1rem";
+      div.style.paddingBottom = "0.5rem";
+      div.innerHTML = `<strong>${c.nombre}:</strong> ${c.texto}`;
+      contenedor.appendChild(div);
+    });
+  }
+
+  mostrarComentarios();
+
+  const formComentario = document.getElementById("comentario-form");
+  formComentario.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const nombre = document.getElementById("nombreComentador").value.trim();
+    const texto = document.getElementById("comentarioTexto").value.trim();
+    if (nombre && texto) {
+      comentarios.push({ nombre, texto });
+      localStorage.setItem("comentariosViajeros", JSON.stringify(comentarios));
+      formComentario.reset();
+      mostrarComentarios();
+    }
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("formBusqueda");
+    const resultado = document.getElementById("resultadoBusqueda");
+    const selectMoneda = document.getElementById("moneda");
+
+    const tasas = {
+      ARS: { simbolo: "$", tasa: 1 },
+      USD: { simbolo: "USD", tasa: 1 / 900 },
+      EUR: { simbolo: "€", tasa: 1 / 1000 }
+    };
+
+    function generarPrecioAleatorio() {
+      return Math.floor(Math.random() * (200000 - 130000 + 1)) + 130000;
+    }
+
+    function generarPrecioBarato() {
+      return Math.floor(Math.random() * (120000 - 80000 + 1)) + 80000;
+    }
+
+    function generarFechaBarata() {
+      const año = 2025;
+      const mes = Math.floor(Math.random() * 12) + 1;
+      const dia = Math.floor(Math.random() * 28) + 1;
+      return `${año}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+    }
+
+    // Deshabilitar fecha de regreso si es "Solo ida"
+    document.getElementById("radio_solo_ida").addEventListener("change", () => {
+      document.getElementById("fechaRegreso").disabled = true;
+    });
+    document.getElementById("radio_ida_vuelta").addEventListener("change", () => {
+      document.getElementById("fechaRegreso").disabled = false;
+    });
+    document.getElementById("radio_multidestino").addEventListener("change", () => {
+      document.getElementById("fechaRegreso").disabled = false;
+    });
+
+    // Guardamos el último resultado generado para recambiar de moneda sin reenviar
+    let ultimoResultado = null;
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const origen = document.getElementById("origen").value.trim();
+      const destino = document.getElementById("destino").value.trim();
+      const fechaSalida = document.getElementById("fechaSalida").value;
+      const fechaRegreso = document.getElementById("fechaRegreso").value;
+      const pasajeros = document.getElementById("pasajeros").value;
+      const verFechas = document.getElementById("buscarFechas").checked;
+      const moneda = selectMoneda.value;
+
+      if (!origen || !destino || !fechaSalida || (!document.getElementById("fechaRegreso").disabled && !fechaRegreso)) {
+        resultado.innerHTML = "⚠️ Completá todos los campos.";
+        return;
+      }
+
+      const precio = generarPrecioAleatorio();
+      const fechaBarata = generarFechaBarata();
+      const precioBarato = generarPrecioBarato();
+
+      ultimoResultado = {
+        origen, destino, fechaSalida, fechaRegreso, pasajeros,
+        precio, precioBarato, fechaBarata, verFechas
+      };
+
+      mostrarResultado(ultimoResultado, moneda);
+    });
+
+    // Auto-submit al elegir fecha
+    document.getElementById("fechaSalida").addEventListener("change", () => {
+      if (document.getElementById("destino").value.trim()) {
+        form.requestSubmit();
+      }
+    });
+
+    // Cambio de moneda
+    selectMoneda.addEventListener("change", () => {
+      if (ultimoResultado) {
+        mostrarResultado(ultimoResultado, selectMoneda.value);
+      }
+    });
+
+    function mostrarResultado(data, monedaElegida) {
+      const tasa = tasas[monedaElegida].tasa;
+      const simbolo = tasas[monedaElegida].simbolo;
+
+      let mensaje = `✈️ Vuelo desde <strong>${data.origen}</strong> a <strong>${data.destino}</strong><br>`;
+      mensaje += `💰 Precio estimado: <strong>${simbolo} ${(data.precio * tasa).toFixed(2)}</strong><br>`;
+      mensaje += `🧍 Pasajeros: ${data.pasajeros}<br>`;
+      mensaje += `📅 Fecha de salida: ${data.fechaSalida}<br>`;
+
+      if (!document.getElementById("fechaRegreso").disabled) {
+        mensaje += `📅 Fecha de regreso: ${data.fechaRegreso}<br>`;
+      }
+
+      if (data.verFechas) {
+        mensaje += `📌 Fecha más barata: ${data.fechaBarata}<br>`;
+        mensaje += `💸 Precio más barato: <strong>${simbolo} ${(data.precioBarato * tasa).toFixed(2)}</strong>`;
+      }
+
+      resultado.innerHTML = mensaje;
+    }
+  });
+</script>
+
+ <footer class="footer">
+    <p>&copy; 2025 Agencia de Viajes. Todos los derechos reservados.</p>
+    <p>Contacto: <a href="mailto:info@agencia.com">info@agencia.com</a></p>
+  </footer>
+
+</body>
+</html>

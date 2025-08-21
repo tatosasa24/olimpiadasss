@@ -1,0 +1,336 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
+}
+
+header {
+  background-color: #004080;
+  color: white;
+  padding: 1rem;
+  position: relative;
+}
+
+.header-contenido {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.header-contenido img {
+  width: 100px;
+  height: auto;
+  border-radius: 6px;
+}
+
+.header-contenido h2 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.registro-header {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+/* Posición flotante para el formulario */
+#formRegistro {
+  position: absolute;
+  top: 3.5rem;
+  right: 1rem;
+  background: white;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 250px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Selector de moneda */
+.moneda-selector select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-weight: bold;
+  color: #004080;
+  background-color: #ffffff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+#btnToggleRegistro {
+  background-color: #ffffff;
+  color: #004080;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#btnToggleRegistro:hover {
+  background-color: #eeeeee;
+}
+
+.nav-formulario {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 250px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.nav-formulario input {
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.nav-formulario button {
+  background-color: #004080;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.nav-formulario button:hover {
+  background-color: #0066cc;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #db4437;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-google i {
+  font-size: 1.2rem;
+}
+
+.btn-google:hover {
+  background-color: #c33d2e;
+}
+
+.divider {
+  text-align: center;
+  margin: 0.7rem 0;
+  color: #888;
+  font-weight: bold;
+}
+
+.registro-link {
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.registro-link a {
+  color: #004080;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.registro-link a:hover {
+  color: #0066cc;
+}
+
+.hidden {
+  display: none;
+}
+
+nav {
+  background: #e0e0e0;
+  padding: 1rem;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #004080;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.nav-links a:focus,
+.nav-links a:active {
+  outline: 2px solid #ff6600;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  background-color: #ffffff33;
+}
+.buscador-container {
+  background: linear-gradient(to bottom, #3677C5, #7DBBE6);
+  padding: 2rem 1rem;
+  color: white;
+  text-align: center;
+}
+
+.buscador-form {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.opciones-viaje {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.opciones-viaje input {
+  margin-right: 5px;
+}
+
+.campos-busqueda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.campos-busqueda input,
+.campos-busqueda select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  min-width: 180px;
+  flex: 1 1 180px;
+}
+
+.campos-busqueda button {
+  background-color: #FFB800;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 0 25px;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 40px;
+  align-self: center;
+}
+
+.campos-busqueda button:hover {
+  background-color: #e7a500;
+}
+
+.fecha-barata {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 0.9rem;
+}
+ nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #e0e0e0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .hero-banner {
+      background-image: url(istockphoto-155439315-612x612\ \(1\).jpg);
+      background-size: cover;
+      background-position: center;
+      padding: 5rem 2rem;
+      color: white;
+      text-align: center;
+    }
+
+    .hero-banner h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .hero-banner p {
+      font-size: 1.3rem;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+    }
+
+    .testimonios {
+      background: #ffffff;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .testimonios blockquote {
+      font-style: italic;
+      margin: 1rem auto;
+      max-width: 600px;
+      color: #333;
+    }
+
+    .footer {
+      background-color: #004080;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .footer a {
+      color: #FFB800;
+      text-decoration: underline;
+    }
+
+    .producto:hover, .paquete-card:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .hero-banner h1 {
+        font-size: 2rem;
+      }
+      .hero-banner p {
+        font-size: 1rem;
+      }
+    }

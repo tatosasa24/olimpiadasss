@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro de Usuario</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="registro.css">
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Crear cuenta</h2>
+    <form id="registroForm" novalidate>
+      <div class="form-group">
+        <i class="fa fa-user"></i>
+        <input type="text" id="nombre" placeholder="Nombre completo" required />
+      </div>
+      <div class="form-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" id="email" placeholder="Correo electrónico" required />
+      </div>
+      <div class="form-group">
+        <i class="fa fa-user-circle"></i>
+        <input type="text" id="usuario" placeholder="Usuario" required />
+      </div>
+      <div class="form-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="pass" placeholder="Contraseña (mínimo 6)" required minlength="6" />
+      </div>
+      <div class="form-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="confirm" placeholder="Confirmar contraseña" required />
+      </div>
+      <button type="submit" class="btn">Registrarse</button>
+      <p id="mensaje" class="mensaje"></p>
+    </form>
+  </div>
+
+  <script>
+  const form = document.getElementById("registroForm");
+  const mensaje = document.getElementById("mensaje");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const usuario = document.getElementById("usuario").value.trim();
+    const pass = document.getElementById("pass").value;
+    const confirm = document.getElementById("confirm").value;
+
+    mensaje.textContent = "";
+    mensaje.className = "mensaje";
+
+    // Validaciones básicas
+    if (!nombre || !email || !usuario || !pass || !confirm) {
+      mostrarError("Todos los campos son obligatorios.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      mostrarError("Correo electrónico inválido.");
+      return;
+    }
+
+    if (pass.length < 6) {
+      mostrarError("La contraseña debe tener al menos 6 caracteres.");
+      return;
+    }
+
+    if (pass !== confirm) {
+      mostrarError("Las contraseñas no coinciden.");
+      return;
+    }
+
+    // Obtener usuarios registrados
+    let usuarios = JSON.parse(localStorage.getItem("usuariosRegistrados")) || [];
+
+    // Validar que no exista el mismo correo
+    if (usuarios.some(u => u.email === email)) {
+      mostrarError("Este correo ya está registrado.");
+      return;
+    }
+
+    // Crear nuevo usuario
+    const nuevoUsuario = {
+      nombre,
+      email,
+      usuario,
+      contraseña: pass // ⚠️ Solo para pruebas, no guardar así en producción
+    };
+
+    // Guardar en la lista de usuarios
+    usuarios.push(nuevoUsuario);
+    localStorage.setItem("usuariosRegistrados", JSON.stringify(usuarios));
+
+    // Iniciar sesión con el nuevo usuario
+    const usuarioActivo = {
+      nombre,
+      email,
+      usuario,
+      logueado: true
+    };
+    localStorage.setItem("usuarioActivo", JSON.stringify(usuarioActivo));
+
+    // Mensaje de éxito y redirección
+    mostrarExito("Registro exitoso. Redirigiendo...");
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1500);
+  });
+
+  function mostrarError(texto) {
+    mensaje.textContent = texto;
+    mensaje.classList.add("error");
+    mensaje.classList.remove("success");
+  }
+
+  function mostrarExito(texto) {
+    mensaje.textContent = texto;
+    mensaje.classList.add("success");
+    mensaje.classList.remove("error");
+  }
+</script>
+
+</body>
+</html>

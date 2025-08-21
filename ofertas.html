@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Carrito de Compras</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .banner-ofertas {
+      background: linear-gradient(to right, #004080, #008CBA);
+      color: white;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .banner-ofertas h2 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+
+    .producto {
+      background-color: #fff;
+      padding: 1rem;
+      margin: 2rem auto;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .producto:hover {
+      transform: scale(1.02);
+    }
+
+    .producto img {
+      width: 200px;
+      height: 140px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .producto .info {
+      flex: 1;
+    }
+
+    .producto h3 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      color: #004080;
+    }
+
+    .producto p {
+      margin: 0.3rem 0;
+    }
+
+    .producto button {
+      background-color: #004080;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-top: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .producto button:hover {
+      background-color: #0066cc;
+    }
+
+    .carrito {
+      max-width: 800px;
+      margin: 2rem auto;
+      background-color: #f8f8f8;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .carrito h3 {
+      margin-top: 0;
+      color: #004080;
+    }
+
+    .carrito-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .carrito-item button {
+      background-color: crimson;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 0.3rem 0.6rem;
+    }
+
+    #finalizar {
+      display: block;
+      margin-top: 1rem;
+      background-color: green;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .beneficios {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: #ffffff;
+    }
+
+    .beneficios h3 {
+      color: #004080;
+      margin-bottom: 1rem;
+    }
+
+    .beneficios ul {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .beneficios li {
+      padding: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .footer {
+      background-color: #004080;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .footer a {
+      color: #FFB800;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="banner-ofertas">
+    <h2>🌍 Ofertas exclusivas para vos</h2>
+    <p>Elegí tu destino y viajá al mejor precio</p>
+  </section>
+
+  <section>
+    <div class="producto">
+      <img src="imagen1.jpg" alt="Bariloche">
+      <div class="info">
+        <h3>Paquete a Bariloche</h3>
+        <p>Incluye vuelo + hotel 3 noches</p>
+        <p><strong>Precio:</strong> $150000</p>
+        <button onclick="agregarAlCarrito('Bariloche', 150000)">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="producto">
+      <img src="imagen2.jpg" alt="Cataratas">
+      <div class="info">
+        <h3>Paquete a Cataratas</h3>
+        <p>Vuelo + excursiones + hotel 4 noches</p>
+        <p><strong>Precio:</strong> $180000</p>
+        <button onclick="agregarAlCarrito('Cataratas', 180000)">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <div class="producto">
+      <img src="imagen3.jpg" alt="Mendoza">
+      <div class="info">
+        <h3>Paquete a Mendoza</h3>
+        <p>Hotel boutique + vino + excursión</p>
+        <p><strong>Precio:</strong> $120000</p>
+        <button onclick="agregarAlCarrito('Mendoza', 120000)">Agregar al carrito</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="carrito">
+    <h3>🛒 Carrito de Compras</h3>
+    <div id="itemsCarrito"></div>
+    <p><strong>Total:</strong> $<span id="total">0</span></p>
+    <button id="finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+  </section>
+
+  <section class="beneficios">
+    <h3>🌟 ¿Por qué elegirnos?</h3>
+    <ul>
+      <li>✔️ Atención personalizada las 24 hs</li>
+      <li>✔️ Flexibilidad de fechas y medios de pago</li>
+      <li>✔️ Viajes 100% garantizados</li>
+      <li>✔️ Precios exclusivos por temporada</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 Agencia de Viajes. Todos los derechos reservados.</p>
+    <p>Consultas: <a href="mailto:info@agencia.com">info@agencia.com</a></p>
+  </footer>
+
+  <script>
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    function agregarAlCarrito(nombre, precio) {
+      const item = carrito.find(p => p.nombre === nombre);
+      if (item) {
+        item.cantidad += 1;
+      } else {
+        carrito.push({ nombre, precio, cantidad: 1 });
+      }
+      guardarYMostrar();
+    }
+
+    function eliminarProducto(nombre) {
+      carrito = carrito.filter(p => p.nombre !== nombre);
+      guardarYMostrar();
+    }
+
+    function guardarYMostrar() {
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      mostrarCarrito();
+    }
+
+    function mostrarCarrito() {
+      const contenedor = document.getElementById("itemsCarrito");
+      const totalSpan = document.getElementById("total");
+      contenedor.innerHTML = "";
+      let total = 0;
+
+      carrito.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "carrito-item";
+        div.innerHTML = `
+          ${item.nombre} x${item.cantidad} - $${item.precio * item.cantidad}
+          <button onclick="eliminarProducto('${item.nombre}')">X</button>
+        `;
+        contenedor.appendChild(div);
+        total += item.precio * item.cantidad;
+      });
+
+      totalSpan.textContent = total;
+    }
+
+    function finalizarCompra() {
+      if (carrito.length === 0) {
+        alert("El carrito está vacío.");
+        return;
+      }
+
+      const pedidoId = Date.now();
+      const clienteEmail = prompt("Ingresá tu correo electrónico para recibir el pedido:");
+      if (!clienteEmail) {
+        alert("Se requiere un correo electrónico válido.");
+        return;
+      }
+
+      const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+      const pedido = {
+        id: pedidoId,
+        cliente: clienteEmail,
+        items: carrito,
+        total: total
+      };
+
+      const pedidos = JSON.parse(localStorage.getItem("pedidosPendientes")) || [];
+      pedidos.push(pedido);
+      localStorage.setItem("pedidosPendientes", JSON.stringify(pedidos));
+
+      alert(`📧 Pedido confirmado y enviado por correo.
+- Cliente: ${clienteEmail}
+- Sector ventas: ventas@agencia.com
+(ID Pedido: ${pedidoId})`);
+
+      carrito = [];
+      guardarYMostrar();
+    }
+
+    // Inicializar carrito en pantalla
+    mostrarCarrito();
+  </script>
+
+</body>
+</html>

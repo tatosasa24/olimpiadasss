@@ -1,0 +1,91 @@
+  *{
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #004080, #0088cc);
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .form-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      padding: 2rem;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      color: #004080;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 1.4rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 2.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+    }
+
+    .form-group input:focus {
+      border-color: #004080;
+    }
+
+    .form-group input:invalid {
+      border-color: crimson;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: #004080;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0066cc;
+    }
+
+    .mensaje {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .mensaje.error {
+      color: crimson;
+    }
+
+    .mensaje.success {
+      color: green;
+    }

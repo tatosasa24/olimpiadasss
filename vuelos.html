@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio - Agencia Turística</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-contenido">
+      <img src="img/agencia-de-viajes-online-Photoroom.png" alt="Logo">
+      <h2>Agencia Turística</h2>
+    </div>
+  
+    <div class="registro-header">
+      <!-- Selector de moneda -->
+      <div class="moneda-selector">
+        <select id="moneda">
+          <option value="ARS">🇦🇷 ARS</option>
+          <option value="USD">🇺🇸 USD</option>
+          <option value="EUR">🇪🇺 EUR</option>
+        </select>
+      </div>
+  
+      <!-- Botón de login -->
+      <button id="btnToggleRegistro">Iniciar sesión <i class="fa fa-address-book"></i></button>
+    </div>
+  
+    <!-- Formulario de login flotante -->
+    <form id="formRegistro" class="nav-formulario hidden">
+      <input type="text" placeholder="Usuario" required>
+      <input type="password" placeholder="Contraseña" required>
+      <button type="submit">Ingresar</button>
+  
+      <div class="divider">o</div>
+  
+      <button type="button" id="btnGoogleLogin" class="btn-google">
+        <i class="fa fa-google"></i> Iniciar sesión con Google
+      </button>
+  
+      <p class="registro-link">
+        ¿No tenés cuenta? <a href="registro.html">Registrate</a>
+      </p>
+    </form>
+  </header>
+ 
+  
+  
+
+<nav>
+  <div class="nav-links">
+    <a href="vuelos.html">Vuelos</a>
+    <a href="ofertas.html">Ofertas</a>
+    <a href="paquetes.html">Paquetes</a>
+  </div>
+</nav>
+
+<section class="buscador-container">
+  <form class="buscador-form">
+    <div class="opciones-viaje">
+      <label><input type="radio" name="tipo-viaje" checked> Ida y vuelta</label>
+      <label><input type="radio" name="tipo-viaje"> Solo ida</label>
+      <label><input type="radio" name="tipo-viaje"> Multidestino</label>
+    </div>
+
+    <div class="campos-busqueda">
+      <input type="text" placeholder="Origen" required>
+      <input type="text" placeholder="Destino" required>
+      <input type="date" required>
+      <input type="date" required>
+      <select>
+        <option>1 pasajero, Económica</option>
+        <option>2 pasajeros, Económica</option>
+        <option>1 pasajero, Business</option>
+      </select>
+      <button type="submit">Buscar</button>
+    </div>
+
+    <label class="fecha-barata">
+      <input type="checkbox"> Ver fechas más baratas
+    </label>
+  </form>
+</section>
+
+
+<script>
+  const form = document.getElementById("registroForm");
+  const mensaje = document.getElementById("mensaje");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const usuario = document.getElementById("usuario").value.trim();
+    const pass = document.getElementById("pass").value;
+    const confirm = document.getElementById("confirm").value;
+
+    mensaje.textContent = "";
+    mensaje.className = "mensaje";
+
+    if (!nombre || !email || !usuario || !pass || !confirm) {
+      mostrarError("Todos los campos son obligatorios.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      mostrarError("Correo electrónico inválido.");
+      return;
+    }
+
+    if (pass.length < 6) {
+      mostrarError("La contraseña debe tener al menos 6 caracteres.");
+      return;
+    }
+
+    if (pass !== confirm) {
+      mostrarError("Las contraseñas no coinciden.");
+      return;
+    }
+
+    // ✅ GUARDAR MÚLTIPLES USUARIOS
+    let usuarios = JSON.parse(localStorage.getItem("usuariosRegistrados")) || [];
+
+    // Chequear si el email ya existe
+    if (usuarios.some(u => u.email === email)) {
+      mostrarError("Este correo ya está registrado.");
+      return;
+    }
+
+    const nuevoUsuario = {
+      nombre,
+      email,
+      usuario,
+      contraseña: pass, // Nota: para producción, jamás guardes la contraseña en texto plano
+    };
+
+    usuarios.push(nuevoUsuario);
+    localStorage.setItem("usuariosRegistrados", JSON.stringify(usuarios));
+
+    // ✅ GUARDAR como usuario activo (sesión iniciada)
+    localStorage.setItem("usuarioActivo", JSON.stringify({
+      nombre,
+      email,
+      usuario,
+      logueado: true
+    }));
+
+    mostrarExito("Registro exitoso. Redirigiendo...");
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1500);
+  });
+
+  function mostrarError(texto) {
+    mensaje.textContent = texto;
+    mensaje.classList.add("error");
+    mensaje.classList.remove("success");
+  }
+
+  function mostrarExito(texto) {
+    mensaje.textContent = texto;
+    mensaje.classList.add("success");
+    mensaje.classList.remove("error");
+  }
+</script>
+
+</body>
+</html>
